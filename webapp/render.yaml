@@ -3,6 +3,6 @@ services:
     name: tyler-durden-app
     env: python
     plan: free
-    buildCommand: "pip install -r requirements.txt && cd webapp"
+    buildCommand: "pip install -r requirements.txt"
     startCommand: "cd webapp && gunicorn app:app"
     branch: main
