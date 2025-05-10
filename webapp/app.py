@@ -11,6 +11,7 @@ import json
 from datetime import datetime
 import re
 import logging
+import os
 from flask_cors import CORS
 
 # Configure logging
@@ -30,6 +31,9 @@ except LookupError:
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
+
+# Global variable for the ML model
+pipeline = None
 
 # Load intents from a separate file
 def load_intents():
@@ -116,11 +120,6 @@ default_intents = {
     }
 }
 
-# Global variables for the ML model
-vectorizer = None
-classifier = None
-pipeline = None
-
 def preprocess_text(text):
     """Clean and normalize text input"""
     if not text:
@@ -139,7 +138,7 @@ def preprocess_text(text):
 
 def train_model():
     """Train the intent classification model with optimized parameters"""
-    global vectorizer, classifier, pipeline
+    global pipeline
     
     logger.info("Training the intent classification model...")
     
@@ -256,11 +255,14 @@ def get_response(user_input):
     else:
         return random.choice(intents_data["unknown"]["responses"])
 
-# Initialize the model when the server starts
-@app.before_first_request
-def initialize():
-    global pipeline
-    pipeline = train_model()
+# Initialize the model at startup
+with app.app_context():
+    try:
+        pipeline = train_model()
+        logger.info("Model initialized successfully")
+    except Exception as e:
+        logger.error(f"Error initializing model: {e}")
+        # Continue app startup even if model fails to initialize
 
 # Routes
 @app.route('/')
@@ -293,8 +295,21 @@ def health_check():
     """Simple health check endpoint"""
     return jsonify({'status': 'ok', 'message': 'Service is running'})
 
+# Create intents.json if it doesn't exist
+def create_intents_file():
+    if not os.path.exists('intents.json'):
+        try:
+            logger.info("Creating intents.json file...")
+            with open('intents.json', 'w') as file:
+                json.dump(default_intents, file, indent=4)
+            logger.info("intents.json created successfully")
+        except Exception as e:
+            logger.error(f"Error creating intents.json: {e}")
+
+# Create intents file during startup
+create_intents_file()
+
 if __name__ == '__main__':
-    # Initialize the model before starting the server
-    pipeline = train_model()
-    # Run the Flask app
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    # Use the PORT environment variable provided by Render
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
