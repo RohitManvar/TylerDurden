@@ -18,7 +18,6 @@ warnings.simplefilter('ignore')
 
 app = Flask(__name__)
 
-# Intents dictionary from your original code
 intents = {
     "greetings": {
         "patterns": ["hello", "hi", "hey", "howdy", "greetings", "good morning", "good afternoon", "good evening", "hi there", "hey there", "what's up", "hello there"],
