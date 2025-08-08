@@ -183,7 +183,6 @@ def get_response(user_input):
 
 os.makedirs('./templates', exist_ok=True)
 
-# Write index.html to templates directory
 with open('./templates/index.html', 'w') as f:
     f.write("""<!DOCTYPE html>
 <html lang="en">
