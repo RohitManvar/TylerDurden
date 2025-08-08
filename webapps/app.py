@@ -653,7 +653,6 @@ with open('./templates/index.html', 'w') as f:
 </body>
 </html>""")
 
-# Routes
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -688,6 +687,5 @@ class handler(BaseHTTPRequestHandler):
             response = test_client.get('/')
             self.wfile.write(response.data)
 
-# For local development
 if __name__ == '__main__':
     app.run(debug=True)
