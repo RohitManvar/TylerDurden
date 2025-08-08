@@ -181,7 +181,6 @@ def get_response(user_input):
     else:
         return "Sorry, I am not sure how to respond to that."
 
-# Create a templates directory for the HTML files
 os.makedirs('./templates', exist_ok=True)
 
 # Write index.html to templates directory
