@@ -10,7 +10,6 @@ import json
 from datetime import datetime
 import os
 
-# Download NLTK data at startup
 nltk.download('punkt', quiet=True)
 
 # Suppress warnings
