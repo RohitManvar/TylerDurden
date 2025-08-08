@@ -667,7 +667,6 @@ def send_message():
 def catch_all(path):
     return home()
 
-# Add route for speech recognition (if needed in the future)
 @app.route('/speech_to_text', methods=['POST'])
 def speech_to_text():
     # This would be implemented with a JavaScript-based solution
