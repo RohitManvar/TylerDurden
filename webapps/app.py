@@ -670,7 +670,7 @@ def catch_all(path):
 @app.route('/speech_to_text', methods=['POST'])
 def speech_to_text():
     # This would be implemented with a JavaScript-based solution
-    # since browser APIs handle speech recognition better than server-side
+    # since browser APIs 
     pass
 
 # Entry point for Vercel
