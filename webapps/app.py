@@ -132,7 +132,7 @@ intents = {
     },
 }
 
-# Training 
+# Training the model 
 training_data = []
 labels = []
 
